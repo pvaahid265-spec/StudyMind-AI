@@ -1,5 +1,33 @@
+# Python
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Environment
 .env
+.env.*
+
+# Backend generated files
+backend/temp.pdf
+backend/uploads/
+
+# Python testing/cache
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Frontend build
+dist/
+frontend/dist/
+
+# IDE
 .vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
