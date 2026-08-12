@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
+
 # =====================================================
 # ENVIRONMENT
 # =====================================================
 
 load_dotenv()
+
 
 # =====================================================
 # ROUTES
@@ -24,6 +26,7 @@ from routes.notifications import router as notifications_router
 from routes.settings import router as settings_router
 from routes.chat import router as chat_router
 
+
 # =====================================================
 # APP
 # =====================================================
@@ -34,6 +37,7 @@ app = FastAPI(
     description="AI Powered Learning Platform Backend 🚀"
 )
 
+
 # =====================================================
 # CORS
 # =====================================================
@@ -41,10 +45,10 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://study-mind-ai-wheat.vercel.app",
-],
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://study-mind-ai-wheat.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,10 +60,12 @@ app.add_middleware(
 
 @app.get("/")
 def home():
+
     return {
         "success": True,
         "message": "StudyMind AI Backend Running 🚀"
     }
+
 
 # =====================================================
 # AUTH
@@ -71,6 +77,7 @@ app.include_router(
     tags=["Authentication"]
 )
 
+
 # =====================================================
 # PROFILE
 # =====================================================
@@ -80,6 +87,7 @@ app.include_router(
     prefix="/profile",
     tags=["Profile"]
 )
+
 
 # =====================================================
 # SETTINGS
@@ -91,6 +99,7 @@ app.include_router(
     tags=["Settings"]
 )
 
+
 # =====================================================
 # NOTIFICATIONS
 # =====================================================
@@ -101,6 +110,7 @@ app.include_router(
     tags=["Notifications"]
 )
 
+
 # =====================================================
 # AI
 # =====================================================
@@ -110,6 +120,7 @@ app.include_router(
     prefix="/ai",
     tags=["AI"]
 )
+
 
 # =====================================================
 # AI CHAT
@@ -130,6 +141,7 @@ app.include_router(
     prefix="/ai",
     tags=["AI Chat"]
 )
+
 
 # =====================================================
 # QUIZ
@@ -153,6 +165,7 @@ app.include_router(
     tags=["Quiz"]
 )
 
+
 # =====================================================
 # NOTES
 # =====================================================
@@ -162,6 +175,7 @@ app.include_router(
     prefix="/notes",
     tags=["Notes"]
 )
+
 
 # =====================================================
 # DASHBOARD
@@ -173,6 +187,7 @@ app.include_router(
     tags=["Dashboard"]
 )
 
+
 # =====================================================
 # ACTIVITY
 # =====================================================
@@ -182,6 +197,7 @@ app.include_router(
     prefix="/activity",
     tags=["Activity"]
 )
+
 
 # =====================================================
 # ANALYTICS
@@ -193,11 +209,13 @@ app.include_router(
     tags=["Analytics"]
 )
 
+
 # =====================================================
 # RUN SERVER
 # =====================================================
 
 if __name__ == "__main__":
+
     import uvicorn
 
     uvicorn.run(
