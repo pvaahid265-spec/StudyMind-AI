@@ -1,8 +1,7 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import {
   Routes,
   Route,
-  Navigate,
   useLocation,
 } from "react-router-dom";
 
@@ -18,21 +17,94 @@ import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // =====================================================
-// PAGES
+// PAGES - LAZY LOADED
 // =====================================================
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
 
-import Dashboard from "./pages/Dashboard";
-import Summary from "./pages/Summary";
-import Quiz from "./pages/Quiz";
-import Chat from "./pages/Chat";
-import MyNotes from "./pages/MyNotes";
-import Analytics from "./pages/Analytics";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import Lesson from "./pages/Lesson";
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Summary = lazy(() => import("./pages/Summary"));
+const Quiz = lazy(() => import("./pages/Quiz"));
+const Chat = lazy(() => import("./pages/Chat"));
+const MyNotes = lazy(() => import("./pages/MyNotes"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Lesson = lazy(() => import("./pages/Lesson"));
+
+// =====================================================
+// LOADING SCREEN
+// =====================================================
+
+function PageLoader() {
+  return (
+    <main
+      className="
+        flex
+        min-h-screen
+        items-center
+        justify-center
+        bg-slate-50
+        px-5
+      "
+    >
+      <div className="text-center">
+
+        <div
+          className="
+            mx-auto
+            flex
+            h-14
+            w-14
+            items-center
+            justify-center
+            rounded-2xl
+            bg-gradient-to-br
+            from-indigo-600
+            to-violet-600
+            text-lg
+            font-black
+            text-white
+            shadow-lg
+            shadow-indigo-200
+          "
+        >
+          S
+        </div>
+
+        <div className="mt-5">
+
+          <div
+            className="
+              mx-auto
+              h-7
+              w-7
+              animate-spin
+              rounded-full
+              border-2
+              border-slate-200
+              border-t-indigo-600
+            "
+          />
+
+        </div>
+
+        <p
+          className="
+            mt-4
+            text-sm
+            font-semibold
+            text-slate-500
+          "
+        >
+          Loading StudyMind AI...
+        </p>
+
+      </div>
+    </main>
+  );
+}
 
 // =====================================================
 // HOME PAGE
@@ -83,6 +155,7 @@ function NotFound() {
         py-12
       "
     >
+
       {/* Background decoration */}
 
       <div
@@ -113,6 +186,8 @@ function NotFound() {
         "
       />
 
+      {/* Card */}
+
       <div
         className="
           relative
@@ -128,6 +203,7 @@ function NotFound() {
           sm:p-10
         "
       >
+
         {/* Logo */}
 
         <div
@@ -248,6 +324,7 @@ function NotFound() {
             sm:justify-center
           "
         >
+
           <button
             type="button"
             onClick={() =>
@@ -303,7 +380,9 @@ function NotFound() {
           >
             Go Home
           </button>
+
         </div>
+
       </div>
     </main>
   );
@@ -327,136 +406,142 @@ function ProtectedPage({ children }) {
 
 function App() {
   return (
-    <Routes>
-      {/* =================================================
-          PUBLIC HOME
-      ================================================= */}
+    <Suspense fallback={<PageLoader />}>
 
-      <Route
-        path="/"
-        element={<HomePage />}
-      />
+      <Routes>
 
-      {/* =================================================
-          AUTHENTICATION
-      ================================================= */}
+        {/* =================================================
+            PUBLIC HOME
+        ================================================= */}
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
+        <Route
+          path="/"
+          element={<HomePage />}
+        />
 
-      <Route
-        path="/register"
-        element={<Register />}
-      />
+        {/* =================================================
+            AUTHENTICATION
+        ================================================= */}
 
-      {/* =================================================
-          MAIN DASHBOARD
-      ================================================= */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedPage>
-            <Dashboard />
-          </ProtectedPage>
-        }
-      />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-      {/* =================================================
-          LEARNING
-      ================================================= */}
+        {/* =================================================
+            MAIN DASHBOARD
+        ================================================= */}
 
-      <Route
-        path="/lesson"
-        element={
-          <ProtectedPage>
-            <Lesson />
-          </ProtectedPage>
-        }
-      />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedPage>
+              <Dashboard />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="/summary"
-        element={
-          <ProtectedPage>
-            <Summary />
-          </ProtectedPage>
-        }
-      />
+        {/* =================================================
+            LEARNING
+        ================================================= */}
 
-      <Route
-        path="/quiz"
-        element={
-          <ProtectedPage>
-            <Quiz />
-          </ProtectedPage>
-        }
-      />
+        <Route
+          path="/lesson"
+          element={
+            <ProtectedPage>
+              <Lesson />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="/chat"
-        element={
-          <ProtectedPage>
-            <Chat />
-          </ProtectedPage>
-        }
-      />
+        <Route
+          path="/summary"
+          element={
+            <ProtectedPage>
+              <Summary />
+            </ProtectedPage>
+          }
+        />
 
-      {/* =================================================
-          KNOWLEDGE
-      ================================================= */}
+        <Route
+          path="/quiz"
+          element={
+            <ProtectedPage>
+              <Quiz />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="/my-notes"
-        element={
-          <ProtectedPage>
-            <MyNotes />
-          </ProtectedPage>
-        }
-      />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedPage>
+              <Chat />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="/analytics"
-        element={
-          <ProtectedPage>
-            <Analytics />
-          </ProtectedPage>
-        }
-      />
+        {/* =================================================
+            KNOWLEDGE
+        ================================================= */}
 
-      {/* =================================================
-          ACCOUNT
-      ================================================= */}
+        <Route
+          path="/my-notes"
+          element={
+            <ProtectedPage>
+              <MyNotes />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="/profile"
-        element={
-          <ProtectedPage>
-            <Profile />
-          </ProtectedPage>
-        }
-      />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedPage>
+              <Analytics />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="/settings"
-        element={
-          <ProtectedPage>
-            <Settings />
-          </ProtectedPage>
-        }
-      />
+        {/* =================================================
+            ACCOUNT
+        ================================================= */}
 
-      {/* =================================================
-          404
-      ================================================= */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedPage>
+              <Profile />
+            </ProtectedPage>
+          }
+        />
 
-      <Route
-        path="*"
-        element={<NotFound />}
-      />
-    </Routes>
+        <Route
+          path="/settings"
+          element={
+            <ProtectedPage>
+              <Settings />
+            </ProtectedPage>
+          }
+        />
+
+        {/* =================================================
+            404
+        ================================================= */}
+
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
+
+      </Routes>
+
+    </Suspense>
   );
 }
 
